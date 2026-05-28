@@ -24,6 +24,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: googleClientSecret,
     }),
   ],
+  callbacks: {
+    session({ session, user }) {
+      if (session.user) {
+        session.user.id = user.id
+        session.user.role = user.role
+      }
+      return session
+    },
+  },
   pages: {
     signIn: "/login",
     error: "/error",

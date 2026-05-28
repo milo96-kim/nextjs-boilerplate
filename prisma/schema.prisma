@@ -13,8 +13,11 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  role          Role      @default(member)
   accounts      Account[]
   sessions      Session[]
+  posts         Post[]
+  comments      Comment[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -54,4 +57,42 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+enum Role {
+  admin
+  moderator
+  member
+}
+
+model Post {
+  id        String    @id @default(cuid())
+  title     String
+  content   String
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([authorId, createdAt])
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  postId    String
+  parentId  String?
+  content   String
+  authorId  String
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([postId, parentId, createdAt])
+  @@index([authorId, createdAt])
 }
