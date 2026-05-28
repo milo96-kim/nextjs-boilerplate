@@ -71,8 +71,8 @@ Four tables required by the Auth.js Prisma adapter:
 ```env
 DATABASE_URL=          # Neon connection string (pooled)
 AUTH_SECRET=           # openssl rand -base64 32
-GOOGLE_CLIENT_ID=      # Google Cloud Console
-GOOGLE_CLIENT_SECRET=  # Google Cloud Console
+AUTH_GOOGLE_ID=        # Google Cloud Console
+AUTH_GOOGLE_SECRET=    # Google Cloud Console
 ```
 
 ## Included

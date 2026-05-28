@@ -570,8 +570,8 @@ AUTH_SECRET=
 
 # Google OAuth — create credentials at https://console.cloud.google.com
 # Authorized redirect URI: http://localhost:3000/api/auth/callback/google
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
 EOF
 ```
 
@@ -620,8 +620,8 @@ cp .env.example .env
 |----------|----------------|
 | `DATABASE_URL` | Neon dashboard → Connection string (pooled) |
 | `AUTH_SECRET` | Run `openssl rand -base64 32` |
-| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials |
-| `GOOGLE_CLIENT_SECRET` | Google Cloud Console → Credentials |
+| `AUTH_GOOGLE_ID` | Google Cloud Console → Credentials |
+| `AUTH_GOOGLE_SECRET` | Google Cloud Console → Credentials |
 
 ### 5. Push database schema
 
