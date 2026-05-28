@@ -40,8 +40,8 @@ cp .env.example .env
 |----------|----------------|
 | `DATABASE_URL` | Neon dashboard → Connection string (pooled) |
 | `AUTH_SECRET` | Run `openssl rand -base64 32` |
-| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials |
-| `GOOGLE_CLIENT_SECRET` | Google Cloud Console → Credentials |
+| `AUTH_GOOGLE_ID` | Google Cloud Console → Credentials |
+| `AUTH_GOOGLE_SECRET` | Google Cloud Console → Credentials |
 
 ### 5. Push database schema
 
