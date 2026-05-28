@@ -54,8 +54,6 @@ export function Board({ session, boardFeed, boardLoadError }: BoardProps) {
     !!session &&
     !!latestPost &&
     canEditContent(session.user.role, session.user.id, latestPost.author.id)
-
-  const mode = latestPost ? (canManagePost ? "edit" : "read") : session ? "create" : "read"
   const commentCount = latestPost ? countComments(latestPost.comments) : 0
 
   return (
@@ -115,7 +113,7 @@ export function Board({ session, boardFeed, boardLoadError }: BoardProps) {
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
           <section className="space-y-6">
-            <PostEditor session={session} boardPost={latestPost} mode={mode} />
+            <PostEditor session={session} boardPost={null} mode="create" />
 
             <Card>
               <CardHeader>
@@ -198,6 +196,9 @@ export function Board({ session, boardFeed, boardLoadError }: BoardProps) {
                       <PencilLine className="size-3.5" />
                       <span>{commentCount} comments in thread</span>
                     </div>
+                    {canManagePost ? (
+                      <PostEditor session={session} boardPost={latestPost} mode="edit" />
+                    ) : null}
                   </div>
                 ) : (
                   <div className="rounded-lg border border-dashed border-border/70 bg-muted/20 p-4 text-sm leading-6 text-muted-foreground">
