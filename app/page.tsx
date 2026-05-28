@@ -1,18 +1,18 @@
 import { auth } from "@/lib/auth"
-import { getBoardPost } from "@/lib/board"
+import { getBoardFeed } from "@/lib/board"
 
 import { Board } from "@/app/components/board"
 
 export default async function Home() {
   const session = await auth()
-  let boardPost = null
+  let boardFeed = null
   let boardLoadError: string | null = null
 
   try {
-    boardPost = await getBoardPost()
+    boardFeed = await getBoardFeed()
   } catch {
     boardLoadError = "Board data could not be loaded right now."
   }
 
-  return <Board session={session} boardPost={boardPost} boardLoadError={boardLoadError} />
+  return <Board session={session} boardFeed={boardFeed} boardLoadError={boardLoadError} />
 }

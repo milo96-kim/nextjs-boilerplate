@@ -35,6 +35,22 @@ export type BoardPost = {
   comments: BoardComment[]
 }
 
+export type BoardListPost = {
+  id: string
+  title: string
+  content: string
+  deletedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
+  commentCount: number
+  author: {
+    id: string
+    name: string | null
+    image: string | null
+    role: BoardRole
+  }
+}
+
 type BoardCommentRow = {
   id: string
   parentId: string | null
@@ -147,5 +163,58 @@ export async function getBoardPost(): Promise<BoardPost | null> {
   return {
     ...post,
     comments: buildCommentTree(comments),
+  }
+}
+
+export async function getBoardPosts(): Promise<BoardListPost[]> {
+  const posts = await db.post.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 20,
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      deletedAt: true,
+      createdAt: true,
+      updatedAt: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          role: true,
+        },
+      },
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
+    },
+  })
+
+  return posts.map((post) => ({
+    id: post.id,
+    title: post.title,
+    content: post.content,
+    deletedAt: post.deletedAt,
+    createdAt: post.createdAt,
+    updatedAt: post.updatedAt,
+    author: post.author,
+    commentCount: post._count.comments,
+  }))
+}
+
+export type BoardFeed = {
+  posts: BoardListPost[]
+  latestPost: BoardPost | null
+}
+
+export async function getBoardFeed(): Promise<BoardFeed> {
+  const [posts, latestPost] = await Promise.all([getBoardPosts(), getBoardPost()])
+
+  return {
+    posts,
+    latestPost,
   }
 }
